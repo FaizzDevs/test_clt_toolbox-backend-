@@ -7,7 +7,7 @@
 
 ## Ringkasan Proyek
 
-Aplikasi **CLT Layup Management System** adalah solusi manajemen Cross-Laminated Timber (CLT) yang dibangun sebagai bagian dari technical test. Aplikasi ini memungkinkan pengguna untuk mengelola data supplier, layups, dan layers dengan hierarki yang jelas.
+Aplikasi ini memungkinkan pengguna untuk mengelola data supplier, layups, dan layers dengan hierarki yang jelas.
 
 **Fitur Utama yang Berhasil Diimplementasikan:**
 - CRUD Suppliers
@@ -44,5 +44,3 @@ Aplikasi **CLT Layup Management System** adalah solusi manajemen Cross-Laminated
 - **Suppliers**: Create, Read, Update, Delete
 - **Layups**: Create, Read, Update, Delete (nested di bawah supplier)
 - **Layers**: Create, Read, Update, Delete (nested di bawah layup)
-
-### 2. **Hierarki Data**

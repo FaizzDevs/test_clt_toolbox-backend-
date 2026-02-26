@@ -16,7 +16,6 @@ class ImportController extends Controller
         $validator = Validator::make($request->all(), [
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240',
             'resolution_strategy' => 'required|in:skip,overwrite,duplicate,manual',
-            'dry_run' => 'boolean'
         ]);
 
         if ($validator->fails()) {
@@ -28,13 +27,16 @@ class ImportController extends Controller
 
         try {
             $strategy = $request->input('resolution_strategy', 'skip');
-            $dryRun = $request->boolean('dry_run', false);
+            
+            $dryRunInput = $request->input('dry_run', 'false');
+            $dryRun = filter_var($dryRunInput, FILTER_VALIDATE_BOOLEAN);
 
             Log::info('Starting import', [
                 'supplier_id' => $supplierId,
                 'file_name' => $request->file('file')->getClientOriginalName(),
                 'strategy' => $strategy,
-                'dry_run' => $dryRun
+                'dry_run_raw' => $dryRunInput,
+                'dry_run_parsed' => $dryRun
             ]);
 
             $import = new LayupsSimpleImport($supplierId, $strategy, $dryRun);

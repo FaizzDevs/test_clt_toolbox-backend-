@@ -98,11 +98,11 @@ function Suppliers() {
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-3">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-bold">Alex Morgan</p>
-                                <p className="text-xs text-slate-500">Engineering Lead</p>
+                                <p className="text-sm font-bold">Muhammad Faizz</p>
+                                <p className="text-xs text-slate-500">Tech Lead</p>
                             </div>
                             <div className="bg-primary/20 rounded-full size-10 flex items-center justify-center">
-                                <span className="text-primary font-bold">AM</span>
+                                <span className="text-primary font-bold">FZ</span>
                             </div>
                         </div>
                     </div>

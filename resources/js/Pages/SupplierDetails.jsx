@@ -17,9 +17,7 @@ function SupplierDetails() {
         description: ''
     });
 
-    useEffect(() => {
-        fetchSupplierDetails();
-    }, [id]);
+    
 
     const fetchSupplierDetails = async () => {
         try {
@@ -28,12 +26,17 @@ function SupplierDetails() {
 
             const layupsResponse = await api.get(`/suppliers/${id}/layups`);
             setLayups(Array.isArray(layupsResponse.data) ? layupsResponse.data : []);
+            
         } catch (error) {
             console.error('Error fetching details:', error);
         } finally {
             setLoading(false);
         }
     };
+    useEffect(() => {
+        fetchSupplierDetails();
+        setLoading(true);
+    }, [id]);
 
     const handleAddLayup = async (e) => {
         e.preventDefault();
@@ -146,7 +149,7 @@ function SupplierDetails() {
                     </div>
                     <div className="bg-primary/20 rounded-full size-10 overflow-hidden border-2 border-primary/10">
                         <div className="w-full h-full bg-primary/30 flex items-center justify-center text-primary font-bold">
-                            AM
+                            FZ
                         </div>
                     </div>
                 </div>
@@ -269,7 +272,7 @@ function SupplierDetails() {
                             <ImportModal
                                 isOpen={showImportModal}
                                 onClose={() => setShowImportModal(false)}
-                                onImport={handleImport}
+                                onSuccess={fetchSupplierDetails}  
                                 supplierId={id}
                             />
                             <button 

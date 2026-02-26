@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import api from '../Services/api'; 
 
-function ImportModal({ isOpen, onClose, onImport, supplierId }) {
+function ImportModal({ isOpen, onClose, onSuccess, supplierId }) {
     const [importFile, setImportFile] = useState(null);
     const [resolutionStrategy, setResolutionStrategy] = useState('skip');
     const [dryRun, setDryRun] = useState(false);
@@ -10,12 +11,61 @@ function ImportModal({ isOpen, onClose, onImport, supplierId }) {
         setImportFile(file);
     };
 
-    const handleImport = () => {
+    const handleImport = async () => {
         if (!importFile) {
             alert('Please select a file first');
             return;
         }
-        onImport(importFile, resolutionStrategy, dryRun);
+
+        const fileExt = importFile.name.split('.').pop().toLowerCase();
+        if (!['xlsx', 'xls'].includes(fileExt)) {
+            alert('Please select an Excel file (.xlsx or .xls)');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('file', importFile);
+        formData.append('resolution_strategy', resolutionStrategy);
+        formData.append('dry_run', dryRun ? 'true' : 'false');
+
+        try {
+            const response = await api.post(`/suppliers/${supplierId}/import`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            
+            if (response.data.success) {
+                alert('✅ Import Excel berhasil!');
+                
+                if (onSuccess) {
+                    await onSuccess();  
+                }
+                
+                onClose();
+                
+                setImportFile(null);
+                setResolutionStrategy('skip');
+                setDryRun(false);
+                
+            } else {
+                alert('Import gagal: ' + (response.data.message || 'Unknown error'));
+            }
+            
+        } catch (error) {
+            console.error('Error:', error);
+            console.error('Response data:', error.response?.data);
+            
+            let errorMessage = 'Import Excel gagal: ';
+            if (error.response?.data?.errors) {
+                errorMessage += JSON.stringify(error.response.data.errors);
+            } else if (error.response?.data?.message) {
+                errorMessage += error.response.data.message;
+            } else {
+                errorMessage += error.message || 'Unknown error';
+            }
+            alert(errorMessage);
+        }
     };
 
     if (!isOpen) return null;
@@ -23,7 +73,7 @@ function ImportModal({ isOpen, onClose, onImport, supplierId }) {
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="relative w-full max-w-2xl bg-background-light dark:bg-background-dark rounded-xl shadow-2xl overflow-hidden border border-primary/10">
-
+                
                 <div className="flex items-center justify-between p-6 border-b border-primary/10">
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                         Import Layup Data
@@ -36,8 +86,9 @@ function ImportModal({ isOpen, onClose, onImport, supplierId }) {
                     </button>
                 </div>
 
+             
                 <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
-
+                
                     <div className="flex flex-col items-center justify-center border-2 border-dashed border-primary/20 bg-primary/5 rounded-xl p-10 group cursor-pointer hover:border-primary/40 transition-all">
                         <div className="bg-primary/10 rounded-full p-4 mb-4 group-hover:bg-primary/20 transition-colors">
                             <span className="material-symbols-outlined text-4xl text-primary">
@@ -48,11 +99,11 @@ function ImportModal({ isOpen, onClose, onImport, supplierId }) {
                             Click to upload or drag and drop
                         </p>
                         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                            CSV or JSON up to 10MB
+                            Excel files (.xlsx, .xls) or CSV up to 10MB 
                         </p>
                         <input
                             type="file"
-                            accept=".csv,.json"
+                            accept=".csv,.json,.xlsx,.xls"
                             onChange={handleFileChange}
                             className="hidden"
                             id="file-upload"

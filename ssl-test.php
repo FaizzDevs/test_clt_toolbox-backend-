@@ -8,7 +8,6 @@ echo "curl.cainfo: " . ($cainfo ? $cainfo : '❌ NOT SET') . "\n";
 $openssl_cafile = ini_get('openssl.cafile');
 echo "openssl.cafile: " . ($openssl_cafile ? $openssl_cafile : '❌ NOT SET') . "\n\n";
 
-// Test koneksi ke Supabase via HTTPS
 echo "Testing HTTPS connection to Supabase...\n";
 $ch = curl_init('https://kzlbaphvvdxxheyvqzen.supabase.co');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

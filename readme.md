@@ -50,7 +50,7 @@ Aplikasi ini memungkinkan pengguna untuk mengelola data supplier, layups, dan la
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/USERNAME/project-name.git
+git clone https://github.com/FaizzDevs/test_clt_toolbox-backend-.git
 cd project-name
 ```
 

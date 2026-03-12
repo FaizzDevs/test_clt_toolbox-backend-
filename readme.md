@@ -44,3 +44,76 @@ Aplikasi ini memungkinkan pengguna untuk mengelola data supplier, layups, dan la
 - **Suppliers**: Create, Read, Update, Delete
 - **Layups**: Create, Read, Update, Delete (nested di bawah supplier)
 - **Layers**: Create, Read, Update, Delete (nested di bawah layup)
+
+## Setup & Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/USERNAME/project-name.git
+cd project-name
+```
+
+### 2. Install Dependencies
+
+Install dependency backend dan frontend.
+
+```bash
+composer install
+npm install
+```
+
+### 3. Setup Environment
+
+Copy file environment:
+
+```bash
+cp .env.example .env
+```
+
+Generate Laravel app key:
+
+```bash
+php artisan key:generate
+```
+
+### 4. Configure Database
+
+Edit file `.env` dan isi konfigurasi database (Supabase / PostgreSQL).
+
+Contoh:
+
+```
+DB_CONNECTION=pgsql
+DB_HOST=your-db-host
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=your-password
+```
+
+### 5. Run Migration
+
+```bash
+php artisan migrate
+```
+
+### 6. Run Application
+
+Start Laravel server:
+
+```bash
+php artisan serve
+```
+
+Start frontend development server:
+
+```bash
+npm run dev
+```
+
+Aplikasi dapat diakses di:
+
+```
+http://127.0.0.1:8000
+```
